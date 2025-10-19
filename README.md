@@ -1,4 +1,4 @@
-現在利用可能なスーパーコンピュータとその利用法について説明する
+現在利用可能なスーパーコンピュータとその利用法について説明する．
 
 # 利用可能ノード一覧
 
@@ -56,13 +56,15 @@
 </table>
 
 # スーパーコンピュータの使い方概説
+## 公式文書
+[物性研スパコン講習会 スパコンの使い方と諸注意 2018](https://mdcl.issp.u-tokyo.ac.jp/scc/wp/wp-content/uploads/2021/07/180424_orientation.pdf)
 ## スーパーコンピュータのノードの種類
 
 スーパーコンピュータは多数の計算ノード（Compute Node）で構成され，ログインノード（Login Node）と実行ノード（Compute Node） の2種類がある．
 ログインノードからジョブスケジューラにバッチを投入し，ジョブスケジューラが計算を実行ノードに割り当てる．
 
 ### ログインノード
-- シェル操作，スクリプト作成，ジョブ送信（ジョブスケジューラ操作)，データ送受信などを行う
+- シェル操作，スクリプト作成，ジョブ送信（ジョブスケジューラ操作），データ送受信などを行う
 - 多くの利用者が同時に利用するので，CPUやメモリを独占するような計算は行わない---当局から**厳しい指導**が入る可能性
 
 ### 実行ノード (計算ノード)
@@ -103,3 +105,90 @@
   - 標準出力や標準エラー出力のファイル名を設定し，計算結果やエラー内容を追跡できるようにする．
   - インタラクティブノードを使うと，計算ノードと同じ環境で対話的にデバッグできる
 
+
+# アカウント作成
+## 鍵登録
+それぞれのシステムの手順を参照すること
+- [物性研](https://scm-web.issp.u-tokyo.ac.jp/scm/UserSupport/ssh-pubkey-regist-flow.html)
+- [情報基盤センター]
+
+※```ssh-keygen```は既存の鍵(githubとか研究室サーバとか)を上書きする場合があるので，```.ssh/id_rsa_ohtaka```のようにログイン先ごとに別の鍵を作成すること．
+
+
+## ssh接続
+```ssh アカウント名@ohtaka.issp.u-tokyo.ac.jp -i ~/.ssh/authorized_keys```
+で接続できるのだが，
+```ssh ohtaka```のようにして，いちいちユーザ名や接続先ipアドレスを打たなくてもssh接続できるようにする方法を説明する．
+
+
+
+### 🐧 Linuxの場合
+1. **ssh-agentを起動**
+   ```bash
+   eval "$(ssh-agent -s)"
+   ```
+
+2. **秘密鍵をエージェントに登録（パスフレーズを一度だけ入力）**
+   ```bash
+   ssh-add ~/.ssh/id_rsa_otaka
+   ```
+
+3. **`~/.ssh/config` を設定**
+   ```bash
+   Host ohtaka
+       HostName ohtaka.issp.u-tokyo.ac.jp
+       User username
+       IdentityFile ~/.ssh/id_rsa_ohtaka
+       AddKeysToAgent yes
+   ```
+
+4. **永続化する場合（ログイン時に自動で有効に）**
+   `~/.bashrc` に以下を追記：
+   ```bash
+   eval "$(ssh-agent -s)" > /dev/null
+   ssh-add ~/.ssh/id_rsa < /dev/null
+   ```
+
+---
+
+### 🍎 macOSの場合
+
+1. **鍵をキーチェーンに登録**
+   ```bash
+   ssh-add --apple-use-keychain ~/.ssh/id_rsa_ohtaka
+   ```
+
+2. **`~/.ssh/config` に設定**
+linuxの場合と同じ
+
+3. **結果**
+   一度パスフレーズを入力すれば、次回以降はmacOSキーチェーンが自動で認証。
+
+
+### 🪟 Windowsの場合（Windows 10以降）
+
+#### 🔹 方法1：PowerShell + OpenSSH
+
+1. **ssh-agentサービスを自動起動**
+   ```powershell
+   Set-Service ssh-agent -StartupType Automatic
+   Start-Service ssh-agent
+   ```
+
+2. **鍵を登録**
+   ```powershell
+   ssh-add $env:USERPROFILE\.ssh\id_rsa
+   ```
+
+3. **`~/.ssh/config` に設定**
+linuxの場合と同じ
+
+→ 一度登録すれば、以後はパスフレーズ不要。
+
+---
+
+#### 🔹 方法2：PuTTY + Pageantを使う場合
+
+1. Pageantを起動  
+2. 秘密鍵（`.ppk`形式）を追加してパスフレーズを入力  
+3. 常駐中は自動的に認証される  
