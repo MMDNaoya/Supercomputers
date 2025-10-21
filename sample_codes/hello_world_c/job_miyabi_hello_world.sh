@@ -1,11 +1,10 @@
 #!/bin/bash
-#SBATCH -p F1cpu
-#SBATCH -N 1
-#SBATCH -n 1
-#SBATCH -c 1
-#SBATCH -J hello_world_failure
-#SBATCH -o job_failure.out
-#SBATCH -e job_failure.err
+#PBS -q debug-c
+#PBS -l select=1
+#PBS -N hello_world_success
+#PBS -o job_success.out
+#PBS -e job_success.err
+#PBS -W group_list=gq32
 gcc hello_world_success.c -o executable
 echo "=== Job started at $(date) ==="
 time srun ./executable ##プログラム実行にはsrunコマンドを使用
