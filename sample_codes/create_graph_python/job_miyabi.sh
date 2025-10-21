@@ -10,5 +10,5 @@
 
 pip install --user matplotlib ## 計算ノードにプリインストールされていないパッケージはpipでインストール
 echo "=== Job started at $(date) ==="
-time python crate_graph_python.py
+time python create_graph_python.py
 echo "=== Job finished at $(date) ==="

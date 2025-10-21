@@ -8,5 +8,5 @@
 pip install --user matplotlib
 TMPDIR=="/work/${USER:0:5}/${USER}"
 echo "=== Job started at $(date) ==="
-time srun python crate_graph_python.py
+time srun python create_graph_python.py
 echo "=== Job finished at $(date) ==="
