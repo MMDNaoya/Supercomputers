@@ -50,7 +50,7 @@
       <td>Miyabi-G ノード</td>
       <td>NVIDIA Grace CPU（72コア）</td>
       <td>120 GB</td>
-      <td>NVIDIA Hopper H100 GPU（96 GB）</td>
+      <td>NVIDIA Hopper H100 GPU（96 GB）(<a href="miyabi_gpu.md">使い方</a>)</td>
     </tr>
   </tbody>
 </table>
