@@ -45,8 +45,9 @@ cuda/12.8             gcc/11.4.1      nvidia/24.11
 
 ## ログインノードでの環境構築
 python仮想環境モジュールであるminiforgeがあるので，それをロードして好みのライブラリをインストールする．    
-著者の好みにより，miniforgeの上からuvをインストールしてそのuvを使ってライブラリをインストールしていく．  
-ログインノードにはGPUが無いので，**torchの自動インストールに頼るとGPUなしバージョンがインストールされる．**  
+**uv**を使いたい人もいるだろうが，uvは中間ファイルを大量に生成してHPCのファイルシステムと相性が悪い．
+
+ログインノードにはGPUが無いので，**自動インストールに頼るとGPUなしバージョンがインストールされる．**  
 **必ず適したcudaバージョン用のパッケージを選択する**
 
 ```
@@ -57,12 +58,11 @@ module load miniforge3/24.11.0-0
 conda create -n myenv python=3.11
 conda activate myenv
 
-pip install uv
-uv pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu128
-uv pip install huggingface albumentations # お好みのパッケージをインストールできる．
+conda install -n myenv torch torchvision --extra-index-url https://download.pytorch.org/whl/cu128
+conda install huggingface albumentations # お好みのパッケージをインストールできる．
 
 # 例えば~/my_packageに自作あるいはcloneしてきたpythonライブラリがあってそれをインストールするなら
-uv pip install -e my_package
+conda run -n myenv pip install ~/my_package
 ```
 
 ## 計算ノードでの実行
