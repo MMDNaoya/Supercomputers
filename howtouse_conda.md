@@ -74,7 +74,7 @@ module purge
 module load cuda/12.8 cudnn/9.10.1.4 nccl/2.26.2
 
 # アーキテクチャに合わせたCondaの初期化（module load miniforge3の代わり）
-# ノードがx86_64であることを前提としたパス指定
+# ノードがaarch64であることを前提としたパス指定
 source /work/opt/local/aarch64/cores/miniforge3/24.11.0-0/etc/profile.d/conda.sh
 
 # 環境の有効化と実行
