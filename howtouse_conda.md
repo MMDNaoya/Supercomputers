@@ -78,7 +78,7 @@ module load cuda/12.8 cudnn/9.10.1.4 nccl/2.26.2
 source /work/opt/local/aarch64/cores/miniforge3/24.11.0-0/etc/profile.d/conda.sh
 
 # 環境の有効化と実行
-conda activate cellpose_gpu
+conda activate /work/gq32/q32001/conda/ml_gpu
 nvidia-smi
 echo "=== Job started at $(date) ==="
 python -m my_package --hoge huga --foo bar
